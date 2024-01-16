@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "498859519121",
+    "project_id": "imageit-c93a9",
+    "storage_bucket": "imageit-c93a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498859519121:android:438441a821eef50a1ea330",
+        "android_client_info": {
+          "package_name": "com.example.imageit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498859519121-rp0e784hj3miog29lli2pitkonlsbihq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.imageit",
+            "certificate_hash": "40be6a82f7a6fe529d1e0e40920fc01b04a52f3e"
+          }
+        },
+        {
+          "client_id": "498859519121-8ms7vl2eaerj7u11t2vumej6pe0ouqeg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdvFGXbsMCRhGNGFAqFTrwUAnB9O2Lm48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498859519121-8ms7vl2eaerj7u11t2vumej6pe0ouqeg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
