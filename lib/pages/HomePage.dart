@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:imageit/pages/CaptionService.dart';
 import 'image_display_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -21,12 +22,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   XFile? _imageFile;
-
   Future _pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source);
 
     if (pickedFile != null) {
+      // print(_imageFile?.name);
+      // print(pickedFile.name);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -81,12 +83,13 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () async {
-              authClass.logOut(context);
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (builder) => SignInPage()),
-                    (route) => false,
-              );
+              fetchPrediction("ji");
+              // authClass.logOut(context);
+              // Navigator.pushAndRemoveUntil(
+              //   context,
+              //   MaterialPageRoute(builder: (builder) => SignInPage()),
+              //       (route) => false,
+              // );
             },
           ),
         ],
@@ -106,3 +109,81 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+//
+//
+// import 'dart:io';
+// import 'package:flutter/material.dart';
+// import 'package:file_picker/file_picker.dart';
+// import 'image_display_page.dart';
+// import 'package:imageit/pages/signin.dart';
+// import '../service/google_auth.dart';
+//
+// class HomePage extends StatefulWidget {
+//   const HomePage({Key? key}) : super(key: key);
+//
+//   @override
+//   State<HomePage> createState() => _HomePageState();
+// }
+//
+// class _HomePageState extends State<HomePage> {
+//   File? _file;
+//
+//   Future _pickImage() async {
+//     FilePickerResult? result = await FilePicker.platform.pickFiles();
+//
+//     if (result != null) {
+//       setState(() {
+//         _file = File(result.files.single.path!);
+//       });
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     AuthClass authClass = AuthClass();
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('File Picker Example'),
+//         centerTitle: true,
+//         actions: [
+//           IconButton(
+//             icon: Icon(Icons.logout),
+//             onPressed: () async {
+//               authClass.logOut(context);
+//               Navigator.pushAndRemoveUntil(
+//                 context,
+//                 MaterialPageRoute(builder: (builder) => SignInPage()),
+//                     (route) => false,
+//               );
+//             },
+//           ),
+//         ],
+//       ),
+//       body: Center(
+//         child: _file == null
+//             ? ElevatedButton(
+//           onPressed: _pickImage,
+//           child: Text('Pick File'),
+//         )
+//             : Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             ElevatedButton(
+//               onPressed: () {
+//                 setState(() {
+//                   _file = null;
+//                 });
+//               },
+//               child: Text('Clear File'),
+//             ),
+//             SizedBox(height: 20),
+//             Text(
+//               'File Path: ${_file!.path}',
+//               style: TextStyle(fontSize: 18),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
