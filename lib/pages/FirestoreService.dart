@@ -78,9 +78,9 @@ class FirestoreService {
 
       String userId = user.uid;
       String imageUrl = await _uploadThumbnail(imageFile, name);
-      String? xyz = await fetchPredictionget();
+      // String? xyz = await fetchPredictionget();
       // await makePostRequestWithDio();
-      print("hi i am response : " +  xyz!);
+      // print("hi i am response : " +  xyz!);
       // Generate a unique document ID based on current timestamp
       String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
       // String docId = '$userId_$timestamp'; // Example: 'userID_timestamp'
@@ -143,6 +143,4 @@ class FirestoreService {
       throw e;
     }
   }
-
-
 }

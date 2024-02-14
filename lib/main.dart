@@ -1,6 +1,7 @@
 // // ignore_for_file: prefer_const_constructors, avoid_print, sort_child_properties_last, unused_local_variable, annotate_overrides
 //
 import 'package:imageit/pages/HomePage.dart';
+import 'package:imageit/pages/mainutil.dart';
 // import 'package:imageit/pages/auth_page.dart';
 // import '../pages/addTodo.dart';
 // import '../pages/homepage.dart';
@@ -48,10 +49,11 @@ class _MyAppState extends State<MyApp> {
     //Firebase.initializeApp();
     return MaterialApp(      // home: currentPage,
 
-      home: HomePage(),
+      // home: HomePage(),
       // home: AuthPage(),
       // home: SignUpPage(),
       // home: AuthForm(),
+      home:mainutil(),
       debugShowCheckedModeBanner: false,
     );
   }
