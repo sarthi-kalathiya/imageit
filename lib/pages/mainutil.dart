@@ -1,27 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:imageit/pages/HomePage.dart';
-import 'package:imageit/pages/recent.dart';
 import 'package:imageit/pages/signin.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: ocrText(),
-//     );
-//   }
-// }
 
 class mainutil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text('Imageit', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black,
         actions: [
           IconButton(
             icon: Icon(Icons.logout),

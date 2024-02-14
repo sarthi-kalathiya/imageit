@@ -12,15 +12,22 @@ class ocrText extends StatefulWidget {
   _ocrTextState createState() => _ocrTextState();
 }
 
-
 class _ocrTextState extends State<ocrText> {
   List<DocumentSnapshot> _documents = [];
   User? _currentUser;
+  bool _isLoading = true;
+
 
   @override
   void initState() {
     super.initState();
     _getCurrentUser();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _updateRecentPostsIfNeeded();
   }
 
   Future<void> _getCurrentUser() async {
@@ -32,22 +39,47 @@ class _ocrTextState extends State<ocrText> {
     }
   }
 
+  // Future<void> _getRecentPosts() async {
+  //   if (_currentUser != null) {
+  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  //         .collection('pre')
+  //         .where('userId', isEqualTo: _currentUser!.uid)
+  //         .orderBy('timestamp', descending: true)
+  //         .get();
+  //
+  //     setState(() {
+  //       _documents = querySnapshot.docs;
+  //     });
+  //   }
+  // }
+
   Future<void> _getRecentPosts() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     if (_currentUser != null) {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('pre')
-          .where('userId', isEqualTo: _currentUser!.uid) // Filter by user ID
+          .where('userId', isEqualTo: _currentUser!.uid)
           .orderBy('timestamp', descending: true)
-          // .limit(4)
           .get();
 
       setState(() {
         _documents = querySnapshot.docs;
+        _isLoading = false;
       });
     }
   }
-  XFile? _imageFile;
-  Future _pickImage(ImageSource source) async {
+
+  Future<void> _updateRecentPostsIfNeeded() async {
+    // Check if this widget is visible in the route stack
+    if (ModalRoute.of(context)?.isCurrent ?? false) {
+      await _getRecentPosts();
+    }
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source);
 
@@ -57,9 +89,13 @@ class _ocrTextState extends State<ocrText> {
         MaterialPageRoute(
           builder: (context) => ImageDisplayPage(imageFile: pickedFile),
         ),
-      );
+      ).then((_) {
+        _updateRecentPostsIfNeeded();
+      });
     }
   }
+
+  XFile? _imageFile;
 
   Future<void> _showImageSourceDialog() async {
     return showDialog<void>(
@@ -102,22 +138,18 @@ class _ocrTextState extends State<ocrText> {
         title: Text('Text Recognition', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.black,
       ),
-      body: _documents.isEmpty
-          ? Center(
-        child: Text(
-          'seems you haven\'t tried anything!',
-          style: TextStyle(fontSize: 16),
-        ),
-      )
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator(color: Colors.black87)) // Show progress indicator while loading
+          : _documents == null || _documents!.isEmpty
+          ? Center(child: Text('Seems you haven\'t tried anything!', style: TextStyle(fontSize: 16)))
           : Column(
         children: [
           Expanded(
             child: Builder(
-
               builder: (context) => GridView.builder(
                 padding: EdgeInsets.all(10),
                 shrinkWrap: true, // Avoid unnecessary scrolling
-                itemCount: _documents.length,
+                itemCount: _documents!.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // 2 documents per row
                   childAspectRatio: 3 / 2, // Adjust based on image and text ratio
@@ -125,7 +157,7 @@ class _ocrTextState extends State<ocrText> {
                   mainAxisSpacing: 10,
                 ),
                 itemBuilder: (context, index) {
-                  DocumentSnapshot document = _documents[index];
+                  DocumentSnapshot document = _documents![index];
                   return DocumentTile(
                     imageUrl: document['image_url'],
                     textSnippet: document['text'],
@@ -146,84 +178,6 @@ class _ocrTextState extends State<ocrText> {
   }
 
 }
-
-// class DocumentTile extends StatefulWidget {
-//   final String imageUrl;
-//   final String textSnippet;
-//
-//   const DocumentTile({
-//     Key? key,
-//     required this.imageUrl,
-//     required this.textSnippet,
-//   }) : super(key: key);
-//
-//   @override
-//   _DocumentTileState createState() => _DocumentTileState();
-// }
-//
-// class _DocumentTileState extends State<DocumentTile> {
-//   bool _isHovering = false;
-//
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MouseRegion(
-//       onEnter: (_) => setState(() => _isHovering = true),
-//       onExit: (_) => setState(() => _isHovering = false),
-//       child: AnimatedContainer(
-//         duration: Duration(milliseconds: 150),
-//         decoration: BoxDecoration(
-//           color: _isHovering ? Colors.grey[200] : Colors.grey[200],
-//           borderRadius: BorderRadius.circular(10),
-//           boxShadow: _isHovering
-//               ? [BoxShadow(color: Color.fromRGBO(120, 120, 120, 0.5), blurRadius: 5)]
-//               : null,
-//         ),
-//         child: Material(
-//           color: Colors.transparent,
-//           child: InkWell(
-//             onTap: () {},
-//             borderRadius: BorderRadius.circular(10),
-//             child: Padding(
-//               padding: EdgeInsets.all(10),
-//               child: Row(
-//                 children: [
-//                   ClipRRect(
-//                     borderRadius: BorderRadius.circular(8),
-//                     child: CachedNetworkImage(
-//                       imageUrl: widget.imageUrl,
-//                       placeholder: (context, url) => Container(
-//                         width: 70,
-//                         height: 70,
-//                         color: Colors.grey[200],
-//                         //   color: Colors.,
-//                       ),
-//                       errorWidget: (context, url, error) => Icon(Icons.error),
-//                       width: 70,
-//                       height: 70,
-//                     ),
-//                   ),
-//                   SizedBox(width: 10),
-//                   Expanded(
-//                     child: Text(
-//                       widget.textSnippet,
-//                       maxLines: 2,
-//                       overflow: TextOverflow.ellipsis,
-//                       style: TextStyle(fontSize: 16),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
 
 class DocumentTile extends StatelessWidget {
   final String imageUrl;
