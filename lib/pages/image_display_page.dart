@@ -14,7 +14,13 @@ import 'result_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'firestoreService.dart';
 import 'package:http/http.dart' as http;
-// import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
+
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:selectable/selectable.dart';
+
 class ImageDisplayPage extends StatefulWidget {
   final XFile imageFile;
 
@@ -29,7 +35,7 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
   String? _recognizedText;
   bool _processing = false;
   final textRecognizer = TextRecognizer();
-  // final interpreter = await   .Interpreter.fromAsset('assets/your_model.tflite');
+
   Future<void> _getTextFromImage() async {
     setState(() {
       _processing = true;
@@ -37,14 +43,9 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
 
     try {
       final file = File(widget.imageFile.path);
-      // print("hiiiii"  + );
       final inputImage = InputImage.fromFile(file);
-      String fileName = widget.imageFile.name.toString();
-      // final textRecognizer = GoogleMlKit.vision.textRecognizer();
       final recognizedText = await textRecognizer.processImage(inputImage);
-      // final recognizedText = await textRecognizer.processImage(inputImage);
-      // await firestoreService.uploadImageAndText(file, recognizedText.text,fileName);
-      await firestoreService.uploadImageAndText(file, recognizedText.text,fileName);
+      await firestoreService.uploadImageAndText(file, recognizedText.text, widget.imageFile.name);
       setState(() {
         _recognizedText = recognizedText.text;
       });
@@ -57,29 +58,6 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
     }
   }
 
-
-  Future<String> makePostRequestAndGetResponse() async {
-    final url = Uri.parse('http://127.0.0.1:5000/process_url');
-    final body = {'url': 'your-url-string-here'}; // Replace with your actual URL string
-
-    try {
-      final response = await http.post(
-        url,
-        body: body,
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        return response.body; // Save the response string in a variable
-      } else {
-        throw Exception('Failed to get response from server: ${response.statusCode}');
-      }
-    } catch (error) {
-      throw Exception('Error making POST request: $error');
-    }
-  }
-
-
   @override
   void initState() {
     super.initState();
@@ -90,27 +68,38 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        title: Text('Text Recognition', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black,
       ),
-      body: Center(
-        child: _processing
-            ? CircularProgressIndicator()
-            : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.file(
-              File(widget.imageFile.path),
-              height: 200.0,
-              width: 200.0,
+      body: SingleChildScrollView(
+        child: Container(
+          color: Color.fromRGBO(250, 250, 250, 0), // Set background color
+          padding: EdgeInsets.all(20), // Add padding for visual balance
+          child: Center(
+            child: _processing
+                ? CircularProgressIndicator(color: Colors.black87) // Loading indicator
+                : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FittedBox(
+                  fit: BoxFit.cover, // Maintain aspect ratio and cover available space
+                  child: Image.file(
+                    File(widget.imageFile.path),
+                  ),
+                ),
+                SizedBox(height: 20), // Spacing between image and text
+                SelectableText(
+                  _recognizedText ?? 'No text recognized.',
+                  style: TextStyle(
+                    color: Colors.black87, // Text color
+                    fontSize: 18, // Font size
+                    fontWeight: FontWeight.w300, // Font weight
+                  ),
+                  textAlign: TextAlign.center, // Align text
+                ),
+              ],
             ),
-            SizedBox(height: 20),
-            _recognizedText != null
-                ? Text(
-              'Recognized Text:\n$_recognizedText',
-              textAlign: TextAlign.center,
-            )
-                : Text('No text recognized.'),
-          ],
+          ),
         ),
       ),
     );

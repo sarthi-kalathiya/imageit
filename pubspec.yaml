@@ -60,6 +60,7 @@ dependencies:
   fluttertoast: ^8.0.8
   bcrypt: ^1.1.3
   path: ^1.8.3
+  selectable: ^0.3.0
 #  http: ^1.2.0
 #  tflite: ^1.1.2
 
