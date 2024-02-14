@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'detailsDocument.dart';
 import 'image_display_page.dart';
 import 'package:camera/camera.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -95,47 +95,6 @@ class _ocrTextState extends State<ocrText> {
     );
   }
 
-
-  @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('Text Recognition', style: TextStyle(color: Colors.white)),
-  //       backgroundColor: Colors.black,
-  //     ),
-  //     body: Column(
-  //       children: [
-  //         Expanded(
-  //           child: GridView.builder(
-  //             padding: EdgeInsets.all(10),
-  //             shrinkWrap: true, // Avoid unnecessary scrolling
-  //             itemCount: _documents.length,
-  //             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //               crossAxisCount: 2, // 2 documents per row
-  //               childAspectRatio: 3 / 2, // Adjust based on image and text ratio
-  //               crossAxisSpacing: 10, // Adjust spacing as needed
-  //               mainAxisSpacing: 10,
-  //             ),
-  //             itemBuilder: (context, index) {
-  //               DocumentSnapshot document = _documents[index];
-  //               return DocumentTile(
-  //                 imageUrl: document['image_url'],
-  //                 textSnippet: document['text'],
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //     floatingActionButton: FloatingActionButton(
-  //       onPressed: _showImageSourceDialog,
-  //       child: Icon(Icons.add),
-  //       backgroundColor: Colors.black,
-  //     ),
-  //     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,23 +112,26 @@ class _ocrTextState extends State<ocrText> {
           : Column(
         children: [
           Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(10),
-              shrinkWrap: true, // Avoid unnecessary scrolling
-              itemCount: _documents.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // 2 documents per row
-                childAspectRatio: 3 / 2, // Adjust based on image and text ratio
-                crossAxisSpacing: 10, // Adjust spacing as needed
-                mainAxisSpacing: 10,
+            child: Builder(
+
+              builder: (context) => GridView.builder(
+                padding: EdgeInsets.all(10),
+                shrinkWrap: true, // Avoid unnecessary scrolling
+                itemCount: _documents.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // 2 documents per row
+                  childAspectRatio: 3 / 2, // Adjust based on image and text ratio
+                  crossAxisSpacing: 10, // Adjust spacing as needed
+                  mainAxisSpacing: 10,
+                ),
+                itemBuilder: (context, index) {
+                  DocumentSnapshot document = _documents[index];
+                  return DocumentTile(
+                    imageUrl: document['image_url'],
+                    textSnippet: document['text'],
+                  );
+                },
               ),
-              itemBuilder: (context, index) {
-                DocumentSnapshot document = _documents[index];
-                return DocumentTile(
-                  imageUrl: document['image_url'],
-                  textSnippet: document['text'],
-                );
-              },
             ),
           ),
         ],
@@ -185,7 +147,85 @@ class _ocrTextState extends State<ocrText> {
 
 }
 
-class DocumentTile extends StatefulWidget {
+// class DocumentTile extends StatefulWidget {
+//   final String imageUrl;
+//   final String textSnippet;
+//
+//   const DocumentTile({
+//     Key? key,
+//     required this.imageUrl,
+//     required this.textSnippet,
+//   }) : super(key: key);
+//
+//   @override
+//   _DocumentTileState createState() => _DocumentTileState();
+// }
+//
+// class _DocumentTileState extends State<DocumentTile> {
+//   bool _isHovering = false;
+//
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MouseRegion(
+//       onEnter: (_) => setState(() => _isHovering = true),
+//       onExit: (_) => setState(() => _isHovering = false),
+//       child: AnimatedContainer(
+//         duration: Duration(milliseconds: 150),
+//         decoration: BoxDecoration(
+//           color: _isHovering ? Colors.grey[200] : Colors.grey[200],
+//           borderRadius: BorderRadius.circular(10),
+//           boxShadow: _isHovering
+//               ? [BoxShadow(color: Color.fromRGBO(120, 120, 120, 0.5), blurRadius: 5)]
+//               : null,
+//         ),
+//         child: Material(
+//           color: Colors.transparent,
+//           child: InkWell(
+//             onTap: () {},
+//             borderRadius: BorderRadius.circular(10),
+//             child: Padding(
+//               padding: EdgeInsets.all(10),
+//               child: Row(
+//                 children: [
+//                   ClipRRect(
+//                     borderRadius: BorderRadius.circular(8),
+//                     child: CachedNetworkImage(
+//                       imageUrl: widget.imageUrl,
+//                       placeholder: (context, url) => Container(
+//                         width: 70,
+//                         height: 70,
+//                         color: Colors.grey[200],
+//                         //   color: Colors.,
+//                       ),
+//                       errorWidget: (context, url, error) => Icon(Icons.error),
+//                       width: 70,
+//                       height: 70,
+//                     ),
+//                   ),
+//                   SizedBox(width: 10),
+//                   Expanded(
+//                     child: Text(
+//                       widget.textSnippet,
+//                       maxLines: 2,
+//                       overflow: TextOverflow.ellipsis,
+//                       style: TextStyle(fontSize: 16),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+
+
+class DocumentTile extends StatelessWidget {
   final String imageUrl;
   final String textSnippet;
 
@@ -196,63 +236,52 @@ class DocumentTile extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DocumentTileState createState() => _DocumentTileState();
-}
-
-class _DocumentTileState extends State<DocumentTile> {
-  bool _isHovering = false;
-
-
-  @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovering = true),
-      onExit: (_) => setState(() => _isHovering = false),
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 150),
-        decoration: BoxDecoration(
-          color: _isHovering ? Colors.grey[200] : Colors.grey[200],
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: _isHovering
-              ? [BoxShadow(color: Color.fromRGBO(120, 120, 120, 0.5), blurRadius: 5)]
-              : null,
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {},
-            borderRadius: BorderRadius.circular(10),
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: CachedNetworkImage(
-                      imageUrl: widget.imageUrl,
-                      placeholder: (context, url) => Container(
-                        width: 70,
-                        height: 70,
-                        color: Colors.grey[200],
-                        //   color: Colors.,
-                      ),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                      width: 70,
-                      height: 70,
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      widget.textSnippet,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DocumentDetailsPage(
+              imageUrl: imageUrl,
+              textSnippet: textSnippet,
             ),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  placeholder: (context, url) => Container(
+                    width: 70,
+                    height: 70,
+                    color: Colors.grey[200],
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  width: 70,
+                  height: 70,
+                ),
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  textSnippet,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ],
           ),
         ),
       ),
