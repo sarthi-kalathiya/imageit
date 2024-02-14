@@ -3,24 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:imageit/pages/CaptionService.dart';
 import 'image_display_page.dart';
-import 'package:flutter/material.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:imageit/pages/signin.dart';
-import '../service/google_auth.dart';
-import 'dart:io';
 import 'package:camera/camera.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'result_screen.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:image_picker/image_picker.dart';
-
-import 'image_display_page.dart'; // For image caching
 
 class ocrText extends StatefulWidget {
   @override
@@ -67,8 +52,6 @@ class _ocrTextState extends State<ocrText> {
     final pickedFile = await picker.pickImage(source: source);
 
     if (pickedFile != null) {
-      // print(_imageFile?.name);
-      // print(pickedFile.name);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -114,60 +97,17 @@ class _ocrTextState extends State<ocrText> {
 
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Text Recognition', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GridView.builder(
-              shrinkWrap: true, // Avoid unnecessary scrolling
-              itemCount: _documents.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // 2 documents per row
-                childAspectRatio: 3 / 2, // Adjust based on image and text ratio
-                crossAxisSpacing: 10, // Adjust spacing as needed
-                mainAxisSpacing: 10,
-              ),
-              itemBuilder: (context, index) {
-                DocumentSnapshot document = _documents[index];
-                return DocumentTile(
-                  imageUrl: document['image_url'],
-                  textSnippet: document['text'],
-                );
-              },
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10, bottom: 20),
-            child: ElevatedButton.icon(
-              onPressed: _showImageSourceDialog,
-              icon: Icon(Icons.add),
-              label: Text('Add Document'),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-// @override
   // Widget build(BuildContext context) {
   //   return Scaffold(
   //     appBar: AppBar(
-  //       title: Text('Text Recognition'),
+  //       title: Text('Text Recognition', style: TextStyle(color: Colors.white)),
+  //       backgroundColor: Colors.black,
   //     ),
   //     body: Column(
   //       children: [
   //         Expanded(
   //           child: GridView.builder(
+  //             padding: EdgeInsets.all(10),
   //             shrinkWrap: true, // Avoid unnecessary scrolling
   //             itemCount: _documents.length,
   //             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -185,19 +125,66 @@ class _ocrTextState extends State<ocrText> {
   //             },
   //           ),
   //         ),
-  //         Container(
-  //           margin: EdgeInsets.only(top: 10, bottom: 20),
-  //           child: ElevatedButton(
-  //             onPressed: _showImageSourceDialog,
-  //             child: Icon(Icons.add),
-  //           ),
-  //         ),
   //       ],
   //     ),
+  //     floatingActionButton: FloatingActionButton(
+  //       onPressed: _showImageSourceDialog,
+  //       child: Icon(Icons.add),
+  //       backgroundColor: Colors.black,
+  //     ),
+  //     floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
   //   );
   // }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Text Recognition', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.black,
+      ),
+      body: _documents.isEmpty
+          ? Center(
+        child: Text(
+          'seems you haven\'t tried anything!',
+          style: TextStyle(fontSize: 16),
+        ),
+      )
+          : Column(
+        children: [
+          Expanded(
+            child: GridView.builder(
+              padding: EdgeInsets.all(10),
+              shrinkWrap: true, // Avoid unnecessary scrolling
+              itemCount: _documents.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // 2 documents per row
+                childAspectRatio: 3 / 2, // Adjust based on image and text ratio
+                crossAxisSpacing: 10, // Adjust spacing as needed
+                mainAxisSpacing: 10,
+              ),
+              itemBuilder: (context, index) {
+                DocumentSnapshot document = _documents[index];
+                return DocumentTile(
+                  imageUrl: document['image_url'],
+                  textSnippet: document['text'],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showImageSourceDialog,
+        child: Icon(Icons.add),
+        backgroundColor: Colors.black,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+
 }
+
 class DocumentTile extends StatefulWidget {
   final String imageUrl;
   final String textSnippet;
@@ -224,7 +211,7 @@ class _DocumentTileState extends State<DocumentTile> {
       child: AnimatedContainer(
         duration: Duration(milliseconds: 150),
         decoration: BoxDecoration(
-          color: _isHovering ? Colors.grey[200] : Colors.white,
+          color: _isHovering ? Colors.grey[200] : Colors.grey[200],
           borderRadius: BorderRadius.circular(10),
           boxShadow: _isHovering
               ? [BoxShadow(color: Color.fromRGBO(120, 120, 120, 0.5), blurRadius: 5)]
@@ -247,6 +234,7 @@ class _DocumentTileState extends State<DocumentTile> {
                         width: 70,
                         height: 70,
                         color: Colors.grey[200],
+                        //   color: Colors.,
                       ),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                       width: 70,
@@ -270,53 +258,4 @@ class _DocumentTileState extends State<DocumentTile> {
       ),
     );
   }
-
-// @override
-  // Widget build(BuildContext context) {
-  //   return MouseRegion(
-  //     onEnter: (_) => setState(() => _isHovering = true),
-  //     onExit: (_) => setState(() => _isHovering = false),
-  //     child: AnimatedContainer(
-  //       duration: Duration(milliseconds: 150),
-  //       decoration: BoxDecoration(
-  //         color: _isHovering ? Colors.grey[200] : Colors.white,
-  //         borderRadius: BorderRadius.circular(10),
-  //         boxShadow: _isHovering ? [BoxShadow(color: Color.fromRGBO(120, 120, 120, 0.5), blurRadius: 5)] : null,
-  //       ),
-  //       child: InkWell(
-  //         onTap: (){},
-  //         child: Padding(
-  //           padding: EdgeInsets.all(10),
-  //           child: Row(
-  //             children: [
-  //               ClipRRect(
-  //                 borderRadius: BorderRadius.circular(8),
-  //                 child: CachedNetworkImage(
-  //                   imageUrl: widget.imageUrl,
-  //                   placeholder: (context, url) => Container(
-  //                     width: 70,
-  //                     height: 70,
-  //                     color: Colors.grey[200],
-  //                   ),
-  //                   errorWidget: (context, url, error) => Icon(Icons.error),
-  //                   width: 70,
-  //                   height: 70,
-  //                 ),
-  //               ),
-  //               SizedBox(width: 10),
-  //               Expanded(
-  //                 child: Text(
-  //                   widget.textSnippet,
-  //                   maxLines: 2,
-  //                   overflow: TextOverflow.ellipsis,
-  //                   style: TextStyle(fontSize: 16),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }
