@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
     // String? token2 = await authClass.getSPToken();
     if (token != null) {
       setState(() {
-        currentPage = HomePage();
+        currentPage = ocrText();
       });
     }
   }
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
     //Firebase.initializeApp();
     return MaterialApp(      // home: currentPage,
 
-      // home: HomePage(),
+      // home: ocrText(),
       // home: AuthPage(),
       // home: SignUpPage(),
       // home: AuthForm(),

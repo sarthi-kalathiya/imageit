@@ -35,7 +35,7 @@ class AuthClass {
           storeTokenAndData("myMSG");
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (builder) => HomePage()),
+              MaterialPageRoute(builder: (builder) => ocrText()),
               (route) => false);
         } catch (e) {
           final snackbar = SnackBar(content: Text(e.toString()));
@@ -117,7 +117,7 @@ class AuthClass {
       storeTokenAndData("myMSG");
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (builder) => HomePage()),
+          MaterialPageRoute(builder: (builder) => ocrText()),
           (route) => false);
       showSnackbar(context, "Logged In");
     } catch (e) {

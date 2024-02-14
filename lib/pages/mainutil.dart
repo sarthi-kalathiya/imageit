@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:imageit/pages/HomePage.dart';
+import 'package:imageit/pages/recent.dart';
+import 'package:imageit/pages/signin.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -8,7 +11,7 @@ import 'package:flutter/material.dart';
 //   @override
 //   Widget build(BuildContext context) {
 //     return MaterialApp(
-//       home: HomePage(),
+//       home: ocrText(),
 //     );
 //   }
 // }
@@ -19,6 +22,19 @@ class mainutil extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Home Page'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignInPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: GridView.count(
         crossAxisCount: 2,
@@ -53,7 +69,7 @@ class mainutil extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CharacterRecognitionPage(),
+                    builder: (context) => ocrText(),
                   ),
                 );
               },
@@ -86,20 +102,6 @@ class ImageCaptionPage extends StatelessWidget {
       ),
       body: Center(
         child: Text('Image Caption Page Content'),
-      ),
-    );
-  }
-}
-
-class CharacterRecognitionPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Character Recognition Page'),
-      ),
-      body: Center(
-        child: Text('Character Recognition Page Content'),
       ),
     );
   }

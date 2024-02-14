@@ -1,5 +1,6 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:imageit/pages/mainutil.dart';
 
 import '../pages/homepage.dart';
 import '../pages/signup.dart';
@@ -228,7 +229,7 @@ class _SignInPageState extends State<SignInPage> {
             await authClass.storeTokenAndData("myMSG");
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (builder) => HomePage()),
+                MaterialPageRoute(builder: (builder) => mainutil()),
                 (route) => false);
           } else {
             // Email is not verified, show an error or take appropriate action

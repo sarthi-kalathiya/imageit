@@ -78,7 +78,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
       await authClass.storeTokenAndData("myMSG");
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => ocrText()),
       );
       myToast("Email Successfully Verified");
       timer?.cancel();

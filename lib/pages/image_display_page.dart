@@ -90,7 +90,7 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Picked Image'),
+        title: Text(''),
       ),
       body: Center(
         child: _processing
