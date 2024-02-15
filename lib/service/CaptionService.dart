@@ -19,6 +19,7 @@ Future<String?> fetchPrediction(String url) async {
       final Map<String, dynamic> data = jsonDecode(response.body);
       // Extract the prediction from the JSON object
       final String prediction = data['prediction'];
+      print(prediction);
       return prediction;
 
       // If the server returns a successful response, return the prediction

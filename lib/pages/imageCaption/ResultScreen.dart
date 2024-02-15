@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../service/CaptionService.dart';
 import '../../service/FirestoreService.dart';
 
 class ImageDisplayPage extends StatefulWidget {
@@ -46,9 +47,10 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
         File(widget.imageFile.path),
         widget.imageFile.name,
       );
+      String? captionText = await fetchPrediction(imageUrl);
       await firestoreService.uploadImageAndText(
           imageUrl,
-          _recognizedText!,
+          captionText!,
           cName
       );
     } catch (e) {
