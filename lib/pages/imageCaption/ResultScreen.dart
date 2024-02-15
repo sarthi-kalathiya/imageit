@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../service/CaptionService.dart';
 import '../../service/FirestoreService.dart';
 
@@ -17,9 +15,8 @@ class ImageDisplayPage extends StatefulWidget {
 }
 
 class _ImageDisplayPageState extends State<ImageDisplayPage> {
-  String? _recognizedText;
+  String? _captionedText;
   bool _processing = false;
-  final textRecognizer = TextRecognizer();
   final firestoreService = FirestoreService();
 
   @override
@@ -34,7 +31,6 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
     });
 
     try {
-      final inputImage = InputImage.fromFilePath(widget.imageFile.path);
       String cName  = "caption";
       String imageUrl = await firestoreService.uploadThumbnail(
         File(widget.imageFile.path),
@@ -42,7 +38,7 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
       );
       String? captionText = await fetchPrediction(imageUrl);
       setState(() {
-        _recognizedText = captionText;
+        _captionedText = captionText;
         _processing = false;
       });
       await firestoreService.uploadImageAndText(
@@ -84,7 +80,7 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
                 ),
                 SizedBox(height: 20),
                 SelectableText(
-                  _recognizedText ?? 'No text recognized.',
+                  _captionedText ?? 'caption is not possible!',
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: 18,

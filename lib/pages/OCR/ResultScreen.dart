@@ -3,9 +3,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../service/FirestoreService.dart';
-// import '../firestoreService.dart';
 
 class ImageDisplayPage extends StatefulWidget {
   final XFile imageFile;
@@ -42,7 +40,6 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
         _processing = false;
       });
       String cName  = "OCR";
-
       String imageUrl = await firestoreService.uploadThumbnail(
         File(widget.imageFile.path),
         widget.imageFile.name,

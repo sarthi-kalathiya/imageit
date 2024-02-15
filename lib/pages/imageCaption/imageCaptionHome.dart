@@ -126,7 +126,7 @@ class _ImageCaptionPageState extends State<ImageCaptionPage> {
           ? Center(
           child: CircularProgressIndicator(
               color:
-              Colors.black87)) // Show progress indicator while loading
+              Colors.black87))
           : _documents == null || _documents!.isEmpty
           ? Center(
           child: Text('Seems you haven\'t tried anything!',

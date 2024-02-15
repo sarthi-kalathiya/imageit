@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:imageit/pages/Auth/signin.dart';
 import 'package:imageit/pages/mainutil.dart';
-
 import '../service/google_auth.dart';
 
 void main() async {
@@ -39,8 +38,7 @@ class _MyAppState extends State<MyApp> {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: mainutil(),
-      // home:currentPage,
+      home:currentPage,
       debugShowCheckedModeBanner: false,
     );
   }
