@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_final_fields, unused_local_variable, use_build_context_synchronously, prefer_const_constructors, empty_catches, prefer_function_declarations_over_variables, non_constant_identifier_names, avoid_types_as_parameter_names
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../pages/HomePage.dart';
+
 // import '../pages/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import '../pages/OCR/OCRHome.dart';
 
 class AuthClass {
   GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -15,10 +16,11 @@ class AuthClass {
       'https://www.googleapis.com/auth/contacts.readonly',
     ],
   );
-  
+
   FirebaseAuth auth = FirebaseAuth.instance;
-  
+
   final storage = new FlutterSecureStorage();
+
   Future<void> googleSignIn(BuildContext context) async {
     try {
       GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
@@ -53,8 +55,7 @@ class AuthClass {
   }
 
   Future<void> storeTokenAndData(String enc) async {
-    await storage.write(
-        key: "token", value: enc);
+    await storage.write(key: "token", value: enc);
   }
 
   Future<String?> getToken() async {
@@ -115,28 +116,26 @@ class AuthClass {
       UserCredential userCredential =
           await auth.signInWithCredential(credential);
       storeTokenAndData("myMSG");
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (builder) => ocrText()),
-          (route) => false);
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (builder) => ocrText()), (route) => false);
       showSnackbar(context, "Logged In");
     } catch (e) {
       showSnackbar(context, e.toString());
     }
   }
 
-  // Future<void> storeSPToken(String token) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setString('SPtoken', token);
-  // }
-  //
-  //  Future<String?> getSPToken() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   return prefs.getString('SPtoken');
-  // }
-  //
-  // Future<void> logoutSP() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.remove('SPtoken');
-  // }
+// Future<void> storeSPToken(String token) async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   await prefs.setString('SPtoken', token);
+// }
+//
+//  Future<String?> getSPToken() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   return prefs.getString('SPtoken');
+// }
+//
+// Future<void> logoutSP() async {
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//   await prefs.remove('SPtoken');
+// }
 }

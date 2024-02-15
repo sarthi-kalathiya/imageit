@@ -1,16 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imageit/pages/mainutil.dart';
 
-import '../pages/homepage.dart';
-import '../pages/signup.dart';
-import '../service/google_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-
-// import 'AddActualDocumentScreen.dart';
-// import 'HomePage.dart';
+import '../../service/google_auth.dart';
 import 'email_verification_page.dart';
+import 'signup.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -26,6 +22,7 @@ class _SignInPageState extends State<SignInPage> {
   bool circular = false;
   AuthClass authClass = AuthClass();
   bool _isPasswordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -129,7 +126,8 @@ class _SignInPageState extends State<SignInPage> {
             controller: controller,
             validator: validator,
             obscureText: obscureText,
-            style: TextStyle(color: Colors.white), // Text color
+            style: TextStyle(color: Colors.white),
+            // Text color
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),

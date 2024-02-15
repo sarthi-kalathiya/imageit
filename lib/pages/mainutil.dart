@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:imageit/pages/HomePage.dart';
-import 'package:imageit/pages/signin.dart';
+import 'package:imageit/pages/Auth/signin.dart';
+import 'package:imageit/pages/OCR/OCRHome.dart';
+
+import 'imageCaption/imageCaptionHome.dart';
 
 class mainutil extends StatelessWidget {
   @override
@@ -80,16 +82,16 @@ class mainutil extends StatelessWidget {
   }
 }
 
-class ImageCaptionPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Image Caption Page'),
-      ),
-      body: Center(
-        child: Text('Image Caption Page Content'),
-      ),
-    );
-  }
-}
+// class ImageCaptionPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Image Caption Page'),
+//       ),
+//       body: Center(
+//         child: Text('Image Caption Page Content'),
+//       ),
+//     );
+//   }
+// }

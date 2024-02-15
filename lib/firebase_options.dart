@@ -67,8 +67,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '498859519121',
     projectId: 'imageit-c93a9',
     storageBucket: 'imageit-c93a9.appspot.com',
-    androidClientId: '498859519121-rp0e784hj3miog29lli2pitkonlsbihq.apps.googleusercontent.com',
-    iosClientId: '498859519121-4d6s443c5aj1k4etaapa02evnb5va0va.apps.googleusercontent.com',
+    androidClientId:
+        '498859519121-rp0e784hj3miog29lli2pitkonlsbihq.apps.googleusercontent.com',
+    iosClientId:
+        '498859519121-4d6s443c5aj1k4etaapa02evnb5va0va.apps.googleusercontent.com',
     iosBundleId: 'com.example.imageit',
   );
 
@@ -78,8 +80,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '498859519121',
     projectId: 'imageit-c93a9',
     storageBucket: 'imageit-c93a9.appspot.com',
-    androidClientId: '498859519121-rp0e784hj3miog29lli2pitkonlsbihq.apps.googleusercontent.com',
-    iosClientId: '498859519121-5rl359rbsu0v6njgijbnu5ctuv5of9v0.apps.googleusercontent.com',
+    androidClientId:
+        '498859519121-rp0e784hj3miog29lli2pitkonlsbihq.apps.googleusercontent.com',
+    iosClientId:
+        '498859519121-5rl359rbsu0v6njgijbnu5ctuv5of9v0.apps.googleusercontent.com',
     iosBundleId: 'com.example.imageit.RunnerTests',
   );
 }

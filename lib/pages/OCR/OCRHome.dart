@@ -1,11 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'detailsDocument.dart';
-import 'image_display_page.dart';
-import 'package:camera/camera.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'ResultScreen.dart';
+import 'detailedDocument.dart';
 
 class ocrText extends StatefulWidget {
   @override
@@ -16,7 +15,6 @@ class _ocrTextState extends State<ocrText> {
   List<DocumentSnapshot> _documents = [];
   User? _currentUser;
   bool _isLoading = true;
-
 
   @override
   void initState() {
@@ -38,20 +36,6 @@ class _ocrTextState extends State<ocrText> {
       print("No user signed in");
     }
   }
-
-  // Future<void> _getRecentPosts() async {
-  //   if (_currentUser != null) {
-  //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-  //         .collection('pre')
-  //         .where('userId', isEqualTo: _currentUser!.uid)
-  //         .orderBy('timestamp', descending: true)
-  //         .get();
-  //
-  //     setState(() {
-  //       _documents = querySnapshot.docs;
-  //     });
-  //   }
-  // }
 
   Future<void> _getRecentPosts() async {
     setState(() {
@@ -139,35 +123,45 @@ class _ocrTextState extends State<ocrText> {
         backgroundColor: Colors.black,
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator(color: Colors.black87)) // Show progress indicator while loading
+          ? Center(
+              child: CircularProgressIndicator(
+                  color:
+                      Colors.black87)) // Show progress indicator while loading
           : _documents == null || _documents!.isEmpty
-          ? Center(child: Text('Seems you haven\'t tried anything!', style: TextStyle(fontSize: 16)))
-          : Column(
-        children: [
-          Expanded(
-            child: Builder(
-              builder: (context) => GridView.builder(
-                padding: EdgeInsets.all(10),
-                shrinkWrap: true, // Avoid unnecessary scrolling
-                itemCount: _documents!.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // 2 documents per row
-                  childAspectRatio: 3 / 2, // Adjust based on image and text ratio
-                  crossAxisSpacing: 10, // Adjust spacing as needed
-                  mainAxisSpacing: 10,
+              ? Center(
+                  child: Text('Seems you haven\'t tried anything!',
+                      style: TextStyle(fontSize: 16)))
+              : Column(
+                  children: [
+                    Expanded(
+                      child: Builder(
+                        builder: (context) => GridView.builder(
+                          padding: EdgeInsets.all(10),
+                          shrinkWrap: true,
+                          // Avoid unnecessary scrolling
+                          itemCount: _documents!.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            // 2 documents per row
+                            childAspectRatio: 3 / 2,
+                            // Adjust based on image and text ratio
+                            crossAxisSpacing: 10,
+                            // Adjust spacing as needed
+                            mainAxisSpacing: 10,
+                          ),
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot document = _documents![index];
+                            return DocumentTile(
+                              imageUrl: document['image_url'],
+                              textSnippet: document['text'],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                itemBuilder: (context, index) {
-                  DocumentSnapshot document = _documents![index];
-                  return DocumentTile(
-                    imageUrl: document['image_url'],
-                    textSnippet: document['text'],
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showImageSourceDialog,
         child: Icon(Icons.add),
@@ -176,7 +170,6 @@ class _ocrTextState extends State<ocrText> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
-
 }
 
 class DocumentTile extends StatelessWidget {
