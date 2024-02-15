@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'ResultScreen.dart';
-import 'detailedDocument.dart';
+import '../detailedDocument.dart';
 
 class ocrText extends StatefulWidget {
   @override
@@ -44,7 +44,7 @@ class _ocrTextState extends State<ocrText> {
 
     if (_currentUser != null) {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('pre')
+          .collection('OCR')
           .where('userId', isEqualTo: _currentUser!.uid)
           .orderBy('timestamp', descending: true)
           .get();
@@ -192,6 +192,7 @@ class DocumentTile extends StatelessWidget {
             builder: (context) => DocumentDetailsPage(
               imageUrl: imageUrl,
               textSnippet: textSnippet,
+              header: 'Text Recognition',
             ),
           ),
         );

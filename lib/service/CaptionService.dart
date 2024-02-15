@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
@@ -13,8 +14,15 @@ Future<String?> fetchPrediction(String url) async {
     );
 
     if (response.statusCode == 200) {
+
+      // If the server returns a successful response, parse the JSON response
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      // Extract the prediction from the JSON object
+      final String prediction = data['prediction'];
+      return prediction;
+
       // If the server returns a successful response, return the prediction
-      return jsonDecode(response.body);
+      // return jsonDecode(response.body);
     } else {
       // If the server returns an error response, throw an exception
       throw Exception('Failed to load prediction');

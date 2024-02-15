@@ -10,8 +10,7 @@ class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  Future<void> uploadImageAndText(
-      File imageFile, String text, String name) async {
+  Future<void> uploadImageAndText(String imageUrl, String text, String cName) async {
     try {
       User? user = _auth.currentUser;
       if (user == null) {
@@ -20,13 +19,13 @@ class FirestoreService {
       }
 
       String userId = user.uid;
-      String imageUrl = await _uploadThumbnail(imageFile, name);
+      // String imageUrl = await _uploadThumbnail(imageFile, name);
       String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
       String docId =
           '$userId' + '_' + '$timestamp'; // Example: 'userID_timestamp'
 
       // Save image URL and text to Firestore under 'predictions' collection
-      await _firestore.collection('pre').doc(docId).set({
+      await _firestore.collection(cName).doc(docId).set({
         'userId': userId,
         'image_url': imageUrl,
         'text': text,
@@ -38,21 +37,16 @@ class FirestoreService {
     }
   }
 
-  Future<String> _uploadThumbnail(File? thumbnail, String name) async {
+  Future<String> uploadThumbnail(File? thumbnail, String name) async {
     if (thumbnail == null) {
       return '';
     }
 
     try {
-      // Get the original filename from the device
       String fileName = path.basename(thumbnail.path);
-
       Reference storageReference = _storage.ref().child('images/$name');
-
       UploadTask uploadTask = storageReference.putFile(thumbnail);
-
       await uploadTask.whenComplete(() => null);
-
       return await storageReference.getDownloadURL();
     } catch (e) {
       print('Error uploading thumbnail: $e');

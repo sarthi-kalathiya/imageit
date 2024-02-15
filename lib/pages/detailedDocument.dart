@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class DocumentDetailsPage extends StatefulWidget {
   final String imageUrl;
   final String textSnippet;
+  final String header;
 
   const DocumentDetailsPage({
     Key? key,
     required this.imageUrl,
     required this.textSnippet,
+    required this.header,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Text Recognition', style: TextStyle(color: Colors.white)),
+        title: Text(widget.header, style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
