@@ -104,7 +104,7 @@ class _AuthPageState extends State<AuthPage> {
                 height: 20,
               ),
               _isLoading
-                  ? const CircularProgressIndicator()
+                  ? const CircularProgressIndicator(color: Colors.black87)
                   : ElevatedButton(
                       onPressed: () async {
                         setState(() {

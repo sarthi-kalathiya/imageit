@@ -21,11 +21,12 @@ class _mainutilState extends State<mainutil> {
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                   builder: (context) => SignInPage(),
                 ),
+                    (route) => false,
               );
             },
           ),

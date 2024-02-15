@@ -49,7 +49,7 @@ class _DocumentDetailsPageState extends State<DocumentDetailsPage> {
                         child: CachedNetworkImage(
                           imageUrl: widget.imageUrl,
                           placeholder: (context, url) =>
-                              CircularProgressIndicator(),
+                              CircularProgressIndicator(color: Colors.black87),
                           errorWidget: (context, url, error) =>
                               Icon(Icons.error),
                           // width: 200,

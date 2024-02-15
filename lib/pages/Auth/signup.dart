@@ -292,7 +292,7 @@ class _SignUpPageState extends State<SignUpPage> {
         height: 55,
         child: Center(
           child: circular
-              ? CircularProgressIndicator()
+              ? CircularProgressIndicator(color: Colors.black87)
               : Text(
                   "Register",
                   style: TextStyle(
