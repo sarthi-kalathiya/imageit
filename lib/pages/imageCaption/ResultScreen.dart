@@ -35,19 +35,16 @@ class _ImageDisplayPageState extends State<ImageDisplayPage> {
 
     try {
       final inputImage = InputImage.fromFilePath(widget.imageFile.path);
-      final RecognizedText recognizedText =
-      await textRecognizer.processImage(inputImage);
-      setState(() {
-        _recognizedText = recognizedText.text;
-        _processing = false;
-      });
       String cName  = "caption";
-      // Upload image and recognized text to Firestore
       String imageUrl = await firestoreService.uploadThumbnail(
         File(widget.imageFile.path),
         widget.imageFile.name,
       );
       String? captionText = await fetchPrediction(imageUrl);
+      setState(() {
+        _recognizedText = captionText;
+        _processing = false;
+      });
       await firestoreService.uploadImageAndText(
           imageUrl,
           captionText!,

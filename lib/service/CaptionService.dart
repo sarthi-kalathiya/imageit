@@ -6,10 +6,10 @@ import 'package:http/http.dart' as http;
 Future<String?> fetchPrediction(String url) async {
   try {
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:8000/process_url'), // Your Flask server URL
+      Uri.parse('http://10.0.2.2:8000/process_url'),
       body: {
         'url':
-            "https://firebasestorage.googleapis.com/v0/b/imageit-c93a9.appspot.com/o/images%2F1001773457_577c3a7d70.jpg?alt=media&token=c7dc8050-e727-4bc9-a732-276fdcdbb522"
+            url
       }, // Data to send in the body of the request
     );
 

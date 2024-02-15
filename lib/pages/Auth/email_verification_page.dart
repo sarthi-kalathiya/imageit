@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../../firebase_constants.dart';
 import '../../service/google_auth.dart';
 import '../OCR/OCRHome.dart';
