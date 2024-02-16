@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:imageit/pages/Auth/signin.dart';
 import 'package:imageit/pages/OCR/OCRHome.dart';
+
+import '../service/google_auth.dart';
 import 'imageCaption/imageCaptionHome.dart';
 
 class mainutil extends StatefulWidget {
@@ -9,6 +11,7 @@ class mainutil extends StatefulWidget {
 }
 
 class _mainutilState extends State<mainutil> {
+  AuthClass authClass = AuthClass();
   double _elevation = 0.0;
 
   @override
@@ -20,13 +23,12 @@ class _mainutilState extends State<mainutil> {
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: () {
+            onPressed: () async {
+              authClass.logOut(context);
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => SignInPage(),
-                ),
-                    (route) => false,
+                MaterialPageRoute(builder: (builder) => SignInPage()),
+                (route) => false,
               );
             },
           ),
@@ -38,7 +40,7 @@ class _mainutilState extends State<mainutil> {
           buildOptionCard(
             'Image Caption',
             Colors.blue,
-                () {
+            () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -51,7 +53,7 @@ class _mainutilState extends State<mainutil> {
           buildOptionCard(
             'Character Recognition',
             Colors.green,
-                () {
+            () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
