@@ -123,19 +123,4 @@ class AuthClass {
       showSnackbar(context, e.toString());
     }
   }
-
-// Future<void> storeSPToken(String token) async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   await prefs.setString('SPtoken', token);
-// }
-//
-//  Future<String?> getSPToken() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   return prefs.getString('SPtoken');
-// }
-//
-// Future<void> logoutSP() async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   await prefs.remove('SPtoken');
-// }
 }
